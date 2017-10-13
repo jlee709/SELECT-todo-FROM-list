@@ -1,29 +1,3 @@
--- sql 
-
--- Initial Columns for `tasks`
-
--- | Column Name  | Datatype                | NULL  | Default           |
--- |--------------|-------------------------|-------|-------------------|
--- | id           | integer                 | false | auto incrementing |
--- | title        | character varying (255) | false |                   |
--- | description  | text                    | true  |                   |
--- | created_at   | timestamp (no tz)       | false | now()             |
--- | updated_at   | timestamp (no tz)       | true  |                   |
--- | completed    | boolean                 | false | false             |
-
-
--- 1. Write queries to accomplish the following
---   1. remove the column named `completed`
---   1. add a column to `tasks` named `completed_at`:timestamp, that may be NULL, and has a default value of `NULL`.
---   1. change the `updated_at` column to not allow NULL values, and have a default value of `now()`
---   1. create a new task, by only setting values (not defining which columns)
---   `id = default value`  
---   `title = 'Study SQL'`  
---   `description = 'Complete this exercise'`  
---   `created_at = now()`  
---   `updated_at = now()`  
---   `completed_at = NULL`
-
 
 DROP USER IF EXISTS michael;
 
@@ -45,6 +19,28 @@ PRIMARY KEY(id)
 
 
 
+--   1. create a new task, by only setting values (not defining which columns)
+--   `id = default value`  
+--   `title = 'Study SQL'`  
+--   `description = 'Complete this exercise'`  
+--   `created_at = now()`  
+--   `updated_at = now()`  
+--   `completed_at = NULL`
+
+
+ALTER TABLE tasks DROP COLUMN IF EXISTS complete;
+
+ALTER TABLE tasks ADD IF NOT EXISTS completed_at timestamp without time zone DEFAULT NULL;
+
+ALTER TABLE tasks ALTER updated_at SET NOT NULL;
+
+ALTER TABLE tasks ALTER updated_at SET DEFAULT NOW();
+
+
+
+-- using the insert method 
+INSERT INTO tasks (id, title, description, created_at, updated_at, completed_at)
+VALUES(DEFAULT,'Study SQL', 'Complete this exercise', NOW(), NOW(), NULL);
 
 
 --   1. create a new task  
@@ -70,11 +66,3 @@ PRIMARY KEY(id)
 --   1. select all fields of all tasks sorted by `title` in ascending order
 
 
-
--- ALTER TABLE tasks DROP COLUMN IF EXISTS completed;
-
--- ALTER TABLE tasks ADD IF NOT EXISTS completed_at timestamp without time zone DEFAULT NULL;
-
--- ALTER TABLE tasks ALTER updated_at SET NOT NULL;
-
--- ALTER TABLE tasks ALTER updated_at SET DEFAULT NOW();
